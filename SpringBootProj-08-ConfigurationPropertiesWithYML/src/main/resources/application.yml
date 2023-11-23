@@ -1,0 +1,38 @@
+per:
+  info:
+    id: 18
+    name: Virat Kohli
+    
+    family-members:
+    - Father:Prem Kohli
+    - Mother:Saroj Kohli
+    - Brother:Vikas Kohli
+    - Sister:Bhawna Kohli
+    #Below Values of Studies prperty are given in Inline Formating(Can be applied in Array, List, Set)
+    studies: [10+2-MPC,B.Tech-Civil,M.Tech-CSE]
+    
+    mob-nos:
+    - 9918181818
+    - 7008181818
+    - 9090181818
+    - 9090181818
+    
+    id-details:
+      AadhaarNo: 552691753118
+      PAN: INDVK1818AS
+      VoterId: 701751818
+      
+    job-details:
+      company-name: Google
+      emp-id: Goo1818gle
+      designation: SDE
+      salary: 118000
+      
+      
+      
+      
+
+      
+
+
+    

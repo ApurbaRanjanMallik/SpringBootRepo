@@ -1,0 +1,61 @@
+package com.arm.sb.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
+
+import com.arm.sb.model.Employee;
+
+@Repository("empMySqlDAO")
+@Profile({ "dev", "test" })
+public class EmployeeMySqlDAOImpl implements IEmployeeDAO {
+	@Autowired
+	private DataSource dataSource;
+	private static final String GET_EMP_BY_DESG = "SELECT ENO, ENAME, DESG, SALARY FROM EMP_PROFILE WHERE DESG IN(?,?,?) ORDER BY DESG";
+	List<Employee> employees = null;
+
+	public EmployeeMySqlDAOImpl() {
+		System.out.println("EmployeeMySqlDAOImpl.EmployeeMySqlDAOImpl()");
+	}
+
+	@Override
+	public List<Employee> getEmployeesByDesg(String desg1, String desg2, String desg3) throws Exception {
+		System.out.println("EmployeeMySqlDAOImpl.getEmployeesByDesg()");
+		System.out.println("DataSource name : " + dataSource.getClass());
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement statement = connection.prepareStatement(GET_EMP_BY_DESG);) {
+			statement.setString(1, desg1);
+			statement.setString(2, desg2);
+			statement.setString(3, desg3);
+			try (ResultSet resultSet = statement.executeQuery()) {
+				employees = new ArrayList<Employee>();
+				while (resultSet.next()) {
+					Employee emp = new Employee();
+					emp.setEmpNo(resultSet.getInt(1));
+					emp.setEmpName(resultSet.getString(2));
+					emp.setJob(resultSet.getString(3));
+					emp.setSalary(resultSet.getDouble(4));
+					employees.add(emp);
+				}
+			} // Inner try
+		} // Outer try
+		catch (SQLException se) {
+			se.printStackTrace();
+			throw se;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return employees;
+
+	}
+}
